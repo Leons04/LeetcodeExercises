@@ -1,29 +1,45 @@
 class Solution:
+
     def isValid(self, s: str) -> bool:
-
-        numRoundBrackets = 0
-        numFancyBrackets = 0
-        numSquaredBrackets = 0
-
+        mem = []
+        tempBool = True
         for c in s:
             match c:
                 case "(":
-                    numRoundBrackets+=1
-                    break
+                    mem.append("(")
                 case "{":
-                    numFancyBrackets+=1
-                    break
+                    mem.append("{")
                 case "[":
-                    numSquaredBrackets+=1
-                    break
+                    mem.append("[")
                 case ")":
-                    numRoundBrackets-=1
-                    break
+                    if(mem != [] and mem[-1] == "("):
+                        mem.pop()
+                    else:
+                        tempBool = False
+                        break
                 case "}":
-                    numFancyBrackets-=1
-                    break
+                    if (mem != [] and mem[-1] == "{"):
+                        mem.pop()
+                    else:
+                        tempBool = False
+                        break
                 case "]":
-                    numSquaredBrackets-=1
-                    break
+                    if (mem != [] and mem[-1] == "["):
+                        mem.pop()
+                    else:
+                        tempBool = False
+                        break
 
-        return numRoundBrackets == 0 and numFancyBrackets==0 and numSquaredBrackets==0
+        return bool(tempBool and mem == [])
+
+if __name__ == "__main__":
+    sol = Solution()
+
+    print(sol.isValid("()"))
+    print(sol.isValid("()[]{}"))
+    print(sol.isValid("(]"))
+    print(sol.isValid("([])"))
+    print(sol.isValid("([)]"))
+
+    print(sol.isValid(""))
+    print(sol.isValid("]"))
